@@ -5,36 +5,40 @@
 ### Project Setup ✅
 - [x] Initialize FastAPI project structure
 - [x] Configure development environment (uv, dependencies)
-- [ ] Set up PostgreSQL database
+- [x] Set up PostgreSQL database
 - [x] Configure Docker environment
 - [ ] Set up CI/CD pipeline
 
-### Database Setup (In Progress)
+### Database Setup ✅
 - [x] Design database schema
 - [x] Implement data models (User, Raffle, Purchase)
 - [x] Create Pydantic schemas
 - [x] Configure Alembic properly
 - [x] Create initial migrations
-- [ ] Set up connection pooling
+- [x] Set up connection pooling
 
-### Core API Development (Next)
-- [ ] Implement user authentication endpoints
-- [ ] Create raffle management endpoints
-- [ ] Set up purchase processing endpoints
-- [ ] Implement user profile endpoints
+### Core API Development ✅
+- [x] Implement user authentication endpoints
+- [x] Create raffle management endpoints
+- [x] Set up purchase processing endpoints
+- [x] Implement user profile endpoints
 
 ### Authentication System
 - [x] Set up JWT configuration
 - [x] Create authentication middleware
-- [ ] Implement role-based access control
-- [ ] Add session management
-- [ ] Implement security policies
+- [x] Implement role-based access control
+- [x] Add session management
+- [x] Implement security policies
+- [x] Set up Supabase authentication
+- [x] Configure Supabase database connection
+- [x] Migrate existing auth to Supabase
+- [x] Implement Supabase client integration
 
 ## Medium Priority (Sprint 2)
 
 ### Service Integration
-- [ ] Set up Stripe integration
-- [ ] Implement Novu notifications
+- [x] Set up Stripe integration
+- [x] Implement Novu notifications
 - [ ] Configure email service
 - [ ] Add blockchain verification
 - [ ] Set up background tasks
@@ -47,10 +51,10 @@
 - [ ] Implement audit logging
 
 ### API Enhancement
-- [ ] Add request validation
+- [x] Add request validation
 - [ ] Implement rate limiting
-- [ ] Create API documentation
-- [ ] Add error handling
+- [x] Create API documentation
+- [x] Add error handling
 - [ ] Set up monitoring
 
 ### Testing Setup
@@ -139,7 +143,5 @@
 - Regular security audits
 
 ## Next Steps
-1. Configure Alembic properly for migrations
-2. Create initial database migrations
-3. Set up connection pooling
-4. Begin implementing authentication endpoints
+1. Configure email service
+2. Add blockchain verification

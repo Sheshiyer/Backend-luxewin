@@ -7,7 +7,7 @@ class PurchaseBase(BaseModel):
     raffle_id: int
     quantity: int
     total_amount: Decimal
-    transaction_id: Optional[str] = None
+    payment_intent_id: str
 
 class PurchaseCreate(PurchaseBase):
     pass

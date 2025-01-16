@@ -1,21 +1,16 @@
-from typing import Annotated
+from typing import Annotated, Dict, Any
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.ext.asyncio import AsyncSession
-from jose import jwt
+from postgrest.exceptions import APIError
 
 from app.core.config import settings
-from app.core.security import verify_token
-from app.core.database import get_db
-from app.models.domain.user import User
-from app.models.schemas.user import TokenPayload
+from app.core.supabase import supabase
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login")
 
 async def get_current_user(
-    db: Annotated[AsyncSession, Depends(get_db)],
     token: Annotated[str, Depends(oauth2_scheme)]
-) -> User:
+) -> Dict[str, Any]:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -23,31 +18,31 @@ async def get_current_user(
     )
     
     try:
-        payload = await verify_token(token)
-        if payload is None:
+        # Verify token with Supabase
+        user = supabase.auth.get_user(token)
+        if not user:
             raise credentials_exception
-        token_data = TokenPayload(**payload)
-        if token_data.sub is None:
+            
+        # Get user data from Supabase database
+        response = supabase.table('users').select("*").eq('id', user.user.id).execute()
+        if not response.data:
             raise credentials_exception
-    except jwt.JWTError:
+            
+        return response.data[0]
+    except APIError:
         raise credentials_exception
-        
-    user = await db.get(User, token_data.sub)
-    if user is None:
-        raise credentials_exception
-    return user
 
 async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)]
-) -> User:
-    if not current_user.is_active:
+    current_user: Annotated[Dict[str, Any], Depends(get_current_user)]
+) -> Dict[str, Any]:
+    if not current_user.get('is_active', False):
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
 async def get_current_active_superuser(
-    current_user: Annotated[User, Depends(get_current_user)]
-) -> User:
-    if not current_user.is_superuser:
+    current_user: Annotated[Dict[str, Any], Depends(get_current_user)]
+) -> Dict[str, Any]:
+    if not current_user.get('is_superuser', False):
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"
         )

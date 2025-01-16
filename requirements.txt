@@ -14,3 +14,4 @@ stripe>=7.6.0
 httpx>=0.25.1
 redis>=5.0.1
 greenlet>=3.0.0
+supabase>=2.0.0
